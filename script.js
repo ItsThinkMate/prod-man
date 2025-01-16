@@ -605,6 +605,9 @@ function submitAnswer() {
         }
     }
 
+     // Update the score display
+    document.getElementById('score').innerText = `Score: ${score} / ${questions.length}`;
+
     // Show the result
     showResult(selectedOption === correctOption, correctOption);
     clearInterval(timer); // Stop the timer
