@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <title>Quiz</title>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Welcome to the Quiz</h1>
+        <div id="score" class="score-display">Score: 0</div> <!-- Score display area -->
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-bar"></div> <!-- Progress bar -->
+            <div id="progress" class="progress-display">Question 1 of 50</div> <!-- Progress text -->
+        </div>
+        <div id="timer" class="timer-display">Time Left: 60</div> <!-- Timer display -->
+        <div id="question-container">
+            <div id="question"></div>
+            <div id="options"></div>
+            <div class="button-container"> <!-- Flex container -->
+                <button id="submit-btn" class="button">Submit</button>
+                <a href="landing.html" class="button">Home</a>
+            </div>
+        </div>
+        <div id="result-container" class="hidden">
+            <div id="result"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
