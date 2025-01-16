@@ -10,18 +10,18 @@
 <body>
     <div class="quiz-container">
         <h1>Welcome to the Quiz</h1>
-        <div id="score" class="score-display">Score: 0</div> <!-- Score display area -->
+        <div id="score" class="score-display">Score: 0 / 10</div> <!-- Update total questions as needed -->
         <div class="progress-container">
             <div id="progress-bar" class="progress-bar"></div> <!-- Progress bar -->
             <div id="progress" class="progress-display">Question 1 of 50</div> <!-- Progress text -->
         </div>
         <div id="timer" class="timer-display">Time Left: 60</div> <!-- Timer display -->
         <div id="question-container">
-            <div id="question"></div>
+            <div id="question" class="question"></div>
             <div id="options"></div>
             <div class="button-container"> <!-- Flex container -->
                 <button id="submit-btn" class="button">Submit</button>
-                <a href="index.html" class="button">Home</a>
+                <a href="index.html" class="button" style="text-decoration: none; height: 16px; width: 130px;">Home</a>
             </div>
         </div>
         <div id="result-container" class="hidden">
