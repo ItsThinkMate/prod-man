@@ -52,22 +52,6 @@
         .button:hover {
             background-color: #0056b3;
         }
-
-        .home-button {
-            margin-top: 20px;
-            padding: 12px 20px;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        .home-button:hover {
-            background-color: #0056b3;
-        }
     </style>
 </head>
 <body>
@@ -77,12 +61,12 @@
         <p><strong>Point System:</strong> Each correct answer awards you 1 point. No points will be awarded for questions answered after the timer runs out.</p>
         <p><strong>Timer:</strong> You have 1 minute to answer each question. The timer resets with each new question.</p>
         <a href="quiz.html" class="button">Take the Quiz</a>
-        <a href="index.html" class="button">Home</a>
+        <a href="index.html" class="button home-button">Home</a>
     </div>
 
     <script>
         function goHome() {
-            window.location.href = 'index.html'; // Change to your landing page filename
+            window.location.href = 'index.html';
         }
     </script>
 </body>
