@@ -526,10 +526,10 @@ function goHome() {
     if (isQuizInProgress) {
         const confirmLeave = confirm("You will lose all progress. Do you want to go to the home page?");
         if (confirmLeave) {
-            window.location.href = 'landing.html'; // Redirect to landing page
+            window.location.href = 'index.html'; // Redirect to landing page
         }
     } else {
-        window.location.href = 'landing.html'; // Redirect to landing page
+        window.location.href = 'index.html'; // Redirect to landing page
     }
 }
 
