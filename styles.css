@@ -60,8 +60,8 @@ body {
 .button-container {
     display: flex; /* Use flexbox for alignment */
     justify-content: space-between; /* Space between buttons */
-    margin-top: 20px; /* Add some spacing above */
-    height: auto; /* Ensure the container has a height to match buttons */
+    margin-top: 6px; /* Add some spacing above */
+    height: 40px; /* Ensure the container has a height to match buttons */
 }
 
 /* Quiz Card Styles */
@@ -157,7 +157,7 @@ body {
 /* Result Display Styles */
 .result-display {
     font-size: 20px;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-bottom: 20px;
     padding: 10px;
     border-radius: 5px;
@@ -195,4 +195,24 @@ img, video {
         padding: 10px;
     }
     /* Add more styles as needed for smaller screens */
+}
+
+/* Responsive styles for mobile compatibility */
+@media (max-width: 600px) {
+    .quiz-container {
+        width: 90%; /* Use a percentage for mobile */
+        max-width: 600px; /* Set a maximum width */
+        height: auto; /* Allow height to adjust based on content */
+        padding: 20px; /* Keep padding for aesthetics */
+    }
+
+    .button-container {
+        flex-direction: column; /* Stack buttons vertically */
+        align-items: center; /* Center buttons */
+    }
+
+    .button {
+        width: 100%; /* Make buttons full width */
+        margin-bottom: 10px; /* Add space between buttons */
+    }
 }
