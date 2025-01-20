@@ -98,7 +98,13 @@ function selectOption(button, index) {
     button.classList.add('selected');
 }
 
+let isTransitioning = false; // Flag to prevent multiple submissions
+
 function submitAnswer() {
+    if (isTransitioning) {
+        return; // Ignore submission if already transitioning
+    }
+
     const selectedIndex = Array.from(optionsElement.children).findIndex(option => option.classList.contains('selected'));
 
     if (selectedIndex === -1) {
@@ -115,16 +121,22 @@ function submitAnswer() {
     showResult(selectedIndex === correctIndex, correctIndex);
     clearInterval(timer);  // Clear the timer before moving to the next question
 
-    // After 1.5 seconds, move to the next question or end the quiz
-    if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex++;
-        setTimeout(() => {
+    // Disable the submit button
+    submitButton.disabled = true;
+    isTransitioning = true; // Set the flag to true
+
+    // After 2.5 seconds, move to the next question or end the quiz
+    setTimeout(() => {
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
             showQuestion();
-        }, 2500);    
-        
-    } else {
-        displayFinalScore();
-    }
+        } else {
+            displayFinalScore();
+        }
+        // Re-enable the submit button
+        submitButton.disabled = false;
+        isTransitioning = false; // Reset the flag
+    }, 2500);  
 }
 
 function showResult(isCorrect, correctIndex) {
@@ -138,11 +150,11 @@ function showResult(isCorrect, correctIndex) {
 
     resultContainer.classList.remove('hidden');  // Show result
 
-    // Wait 1.5 seconds before hiding result and moving to the next question
+    // Wait 2.5 seconds before hiding result and moving to the next question
     setTimeout(() => {
         resultContainer.classList.add('hidden');  // Hide result after delay
         questionContainer.classList.remove('hidden');  // Show next question
-    }, isCorrect ? 1500 : 2500);  // 1.5 seconds delay
+    }, isCorrect ? 1500 : 2500);  // 2.5 seconds delay
 }
 
 function updateProgress() {
