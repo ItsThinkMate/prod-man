@@ -185,17 +185,19 @@ body {
     border: 1px solid #b8daff; /* Border color matching the background */
 }
 
+.info-container {
+    background: white;
+    max-width: 400px;
+    padding: 40px;
+    border-radius: 6px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
 img, video {
     max-width: 100%;
     height: auto;
 }
 
-@media (max-width: 768px) {
-    body {
-        padding: 10px;
-    }
-    /* Add more styles as needed for smaller screens */
-}
 
 /* Responsive styles for mobile compatibility */
 @media (max-width: 600px) {
@@ -221,8 +223,8 @@ img, video {
 @media (max-width: 600px) {
     .info-container {
         width: 90%; /* Use a percentage for mobile */
-        max-width: 600px; /* Set a maximum width */
-        padding: 20px; /* Adjust padding for mobile */
+        max-width: 500px; /* Set a maximum width */
+        padding: 10%; /* Adjust padding for mobile */
     }
 
     h1 {
