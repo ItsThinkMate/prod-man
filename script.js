@@ -501,12 +501,11 @@ const questions = [
     }
 ];
 
-let isQuizInProgress = false; // Global variable to track quiz progress
 let currentQuestionIndex = 0;
 let score = 0;
-let timer; // Variable to hold the timer
-const timeLimit = 60; // Time limit for each question in seconds
-let timeLeft = timeLimit; // Time left for the current question
+let timer;
+const timeLimit = 60;
+let timeLeft = timeLimit;
 
 const questionContainer = document.getElementById('question-container');
 const questionElement = document.getElementById('question');
@@ -514,159 +513,134 @@ const optionsElement = document.getElementById('options');
 const submitButton = document.getElementById('submit-btn');
 const resultContainer = document.getElementById('result-container');
 const resultElement = document.getElementById('result');
-const scoreDisplay = document.getElementById('score'); // Score display element
-const progressBar = document.getElementById('progress-bar'); // Progress bar element
-const progressDisplay = document.getElementById('progress'); // Progress text element
-const timerDisplay = document.getElementById('timer'); // Timer display element
+const scoreDisplay = document.getElementById('score');
+const progressBar = document.getElementById('progress-bar');
+const progressDisplay = document.getElementById('progress');
+const timerDisplay = document.getElementById('timer');
 
 submitButton.addEventListener('click', submitAnswer);
 
-// Home button function
-function goHome() {
-    if (isQuizInProgress) {
-        const confirmLeave = confirm("You will lose all progress. Do you want to go to the home page?");
-        if (confirmLeave) {
-            window.location.href = 'index.html'; // Redirect to landing page
-        }
-    } else {
-        window.location.href = 'index.html'; // Redirect to landing page
-    }
+function startQuiz() {
+    resetQuiz();
+    showQuestion();
 }
 
-function startQuiz() {
-    isQuizInProgress = true; // Set to true when the quiz starts
+function resetQuiz() {
     currentQuestionIndex = 0;
     score = 0;
-    scoreDisplay.innerText = "Score: " + score; // Initialize score display
-    updateProgress(); // Initialize progress display
-    startTimer(); // Start the timer for the first question
-    questionContainer.classList.remove('hidden');
+    scoreDisplay.innerText = `Score: ${score}`;
+    updateProgress();
     resultContainer.classList.add('hidden');
-    showQuestion(questions[currentQuestionIndex]);
+    questionContainer.classList.remove('hidden');
 }
 
 function startTimer() {
-    clearInterval(timer); // Clear any existing timer
-    timeLeft = timeLimit; // Reset the timer for the current question
-    updateTimerDisplay(); // Update the timer display
+    clearInterval(timer);  // Clear any existing timer to prevent overlaps
+    timeLeft = timeLimit;  // Reset the timer to the initial time
+    updateTimerDisplay();  // Update the timer display with the new value
 
     timer = setInterval(() => {
-        if (timeLeft > 0) {
-            timeLeft--;
-            updateTimerDisplay();
-        } else {
-            clearInterval(timer); // Stop the timer when it reaches zero
-            alert("Time's up! You can still answer the question, but no points will be awarded.");
+        timeLeft--;
+        if (timeLeft <= 0) {
+            clearInterval(timer); // Stop the timer when it reaches 0
+            alert("Time's up! You can still answer, but no points will be awarded.");
+            updateTimerDisplay(); // Update the display to show 0s
         }
-    }, 1000); // Update every second
+        updateTimerDisplay(); // Update the timer display each second
+    }, 1000);
 }
+
 
 function updateTimerDisplay() {
-    timerDisplay.innerText = `Time Left: ${timeLeft}`;
+    timerDisplay.innerText = `Time Left: ${timeLeft}s`;
 }
 
-function showQuestion(question) {
+function showQuestion() {
+    const question = questions[currentQuestionIndex];
     questionElement.innerText = question.question;
-    optionsElement.innerHTML = ''; // Clear previous options
+    optionsElement.innerHTML = '';
+
     question.options.forEach((option, index) => {
         const button = document.createElement('button');
         button.innerText = option;
         button.classList.add('option');
-        button.addEventListener('click', () => selectOption(button, index));
+        button.onclick = () => selectOption(button, index);
         optionsElement.appendChild(button);
     });
-    questionContainer.classList.remove('hidden'); // Ensure the question container is visible
+
+    startTimer();
+    updateProgress();
 }
 
 function selectOption(button, index) {
-    const optionButtons = optionsElement.children;
-    for (let btn of optionButtons) {
-        btn.classList.remove('selected'); // Remove previous selection
-    }
-    button.classList.add('selected'); // Highlight the selected option
+    Array.from(optionsElement.children).forEach(btn => btn.classList.remove('selected'));
+    button.classList.add('selected');
 }
 
 function submitAnswer() {
-    const selectedOption = Array.from(optionsElement.children).findIndex(option => option.classList.contains('selected'));
-    
-    if (selectedOption === -1) {
-        alert("Please select an answer before submitting.");
+    const selectedIndex = Array.from(optionsElement.children).findIndex(option => option.classList.contains('selected'));
+
+    if (selectedIndex === -1) {
+        alert("Please select an option before submitting.");
         return;
     }
 
-    const correctOption = questions[currentQuestionIndex].correctAnswer;
-
-    // Check if the selected option is correct
-    if (selectedOption === correctOption) {
-        // Only add to score if time is valid
-        if (timeLeft > 0) {
-            score++;
-            scoreDisplay.innerText = "Score: " + score; // Update score display
-        }
+    const correctIndex = questions[currentQuestionIndex].correctAnswer;
+    if (selectedIndex === correctIndex && timeLeft > 0) {
+        score++;
+        scoreDisplay.innerText = `Score: ${score}`;
     }
 
-     // Update the score display
-    document.getElementById('score').innerText = `Score: ${score} / ${questions.length}`;
+    showResult(selectedIndex === correctIndex, correctIndex);
+    clearInterval(timer);  // Clear the timer before moving to the next question
 
-    // Show the result
-    showResult(selectedOption === correctOption, correctOption);
-    clearInterval(timer); // Stop the timer
-
-    // Check if there are more questions
+    // After 1.5 seconds, move to the next question or end the quiz
     if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex++; // Move to the next question
-        showQuestion(questions[currentQuestionIndex]); // Show the next question
-        clearInterval(timer); // Clear any existing timer
-        timerDisplay.style.display = 'block'; // Show the timer display immediately
-        startTimer(); // Start the timer for the new question
+        currentQuestionIndex++;
+        setTimeout(() => {
+            showQuestion();
+        }, 2500);    
+        
     } else {
-        // Quiz is finished, show final results
-        displayFinalScore(); // Function to handle final score display
+        displayFinalScore();
     }
 }
 
-function showResult(isCorrect, correctOption) {
-    questionContainer.classList.add('hidden');
-    resultContainer.classList.remove('hidden');
+function showResult(isCorrect, correctIndex) {
+    resultElement.className = 'result-display';
+    resultElement.innerText = isCorrect 
+        ? "Correct!"
+        : `Wrong! The correct answer was: ${questions[currentQuestionIndex].options[correctIndex]}`;
+    
+    // Add a class to style the result (correct/incorrect)
+    resultElement.classList.add(isCorrect ? 'correct' : 'incorrect');
 
-    // Clear previous result styles
-    resultElement.className = 'result-display'; // Reset to base class
+    resultContainer.classList.remove('hidden');  // Show result
 
-    // Display whether the answer was correct or wrong, and show the correct answer
-    if (isCorrect) {
-        resultElement.innerText = "Correct! ";
-        resultElement.classList.add('correct'); // Add correct class for styling
-    } else {
-        resultElement.innerText = `Wrong! The correct answer was: ${questions[currentQuestionIndex].options[correctOption]} `;
-        resultElement.classList.add('incorrect'); // Add incorrect class for styling
-    }
-
-    // Set a timeout to hide the result after 1 second
+    // Wait 1.5 seconds before hiding result and moving to the next question
     setTimeout(() => {
-        resultContainer.classList.add('hidden'); // Hide the result container
-        questionContainer.classList.remove('hidden'); // Show the question container again
-        timerDisplay.style.display = 'block'; // Show the timer display immediately
-        startTimer(); // Start the timer for the new question
-    }, 1000); // 1000 milliseconds = 1 second
-}
-
-function nextQuestion() {
-    // Proceed with showing the next question
-    if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex++; // Move to the next question
-        showQuestion(questions[currentQuestionIndex]); // Show the next question
-        startTimer(); // Restart the timer for the new question
-    } else {
-        // Quiz is finished, show final results
-        displayFinalScore(); // Function to handle final score display
-    }
+        resultContainer.classList.add('hidden');  // Hide result after delay
+        questionContainer.classList.remove('hidden');  // Show next question
+    }, isCorrect ? 1500 : 2500);  // 1.5 seconds delay
 }
 
 function updateProgress() {
-    const progressPercentage = ((currentQuestionIndex + 1) / questions.length) * 100; // Calculate progress percentage
-    progressBar.style.width = progressPercentage + '%'; // Update progress bar width
-    progressDisplay.innerText = `Question ${currentQuestionIndex + 1} of ${questions.length}`; // Update progress text
+    const progressPercentage = ((currentQuestionIndex + 1) / questions.length) * 100;
+    progressBar.style.width = `${progressPercentage}%`;
+    progressDisplay.innerText = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+}
+
+function displayFinalScore() {
+    questionContainer.classList.add('hidden');
+    resultContainer.classList.remove('hidden');
+    resultElement.className = 'result-display';
+    resultElement.innerText = `Quiz Completed! Your final score is ${score} / ${questions.length}`;
+}
+
+function shuffleQuestions() {
+    questions.sort(() => Math.random() - 0.5);
 }
 
 // Start the quiz when the page loads
+shuffleQuestions();
 startQuiz();
