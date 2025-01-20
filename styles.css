@@ -40,10 +40,10 @@ body {
     display: inline-flex; /* Ensure buttons are treated the same */
     align-items: center; /* Center content vertically */
     justify-content: center; /* Center content horizontally */
-    padding: 12px 10px; /* Consistent padding */
+    padding: 6px 10px; /* Adjust padding for reduced height */
     font-size: 17px; /* Consistent font size */
-    height: 40px; /* Unified height */
-    width: 150px; /* Unified width */
+    height: 40px; /* Set a unified height */
+    width: auto; /* Allow width to adjust based on content */
     border: none; /* No border */
     border-radius: 5px; /* Rounded corners */
     background-color: #007bff; /* Primary button color */
@@ -53,25 +53,15 @@ body {
     text-decoration: none; /* Remove underline for anchor buttons */
 }
 
-/* Remove underline for anchor buttons */
-a.button {
-    text-decoration: none !important; /* Ensure anchor buttons have no underline */
-}
-
-/* Button hover effect */
 .button:hover {
     background-color: #0056b3; /* Darker shade on hover */
 }
 
-/* Flex container for buttons */
 .button-container {
     display: flex; /* Use flexbox for alignment */
     justify-content: space-between; /* Space between buttons */
     margin-top: 20px; /* Add some spacing above */
-}
-
-.button-container a {
-    text-decoration: none !important; /* Ensure anchor buttons have no underline */
+    height: auto; /* Ensure the container has a height to match buttons */
 }
 
 /* Quiz Card Styles */
@@ -160,6 +150,10 @@ a.button {
     border: 1px solid #0056b3; /* Darker border for selected option */
 }
 
+.hidden {
+    display: none;
+}
+
 /* Result Display Styles */
 .result-display {
     font-size: 20px;
@@ -189,4 +183,16 @@ a.button {
     border-radius: 5px;
     background-color: #e7f1ff; /* Light blue background for score */
     border: 1px solid #b8daff; /* Border color matching the background */
+}
+
+img, video {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    /* Add more styles as needed for smaller screens */
 }
