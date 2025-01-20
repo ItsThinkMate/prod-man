@@ -220,7 +220,7 @@ img, video {
 /* Responsive styles for quiz-info page */
 @media (max-width: 600px) {
     .info-container {
-        width: 90%; /* Use a percentage for mobile */
+        width: 80%; /* Use a percentage for mobile */
         max-width: 400px; /* Set a maximum width */
         padding: 20px; /* Adjust padding for mobile */
     }
